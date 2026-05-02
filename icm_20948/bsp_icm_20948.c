@@ -8,15 +8,14 @@ static const uint8_t MAX_MAGNETOMETER_STARTS = 10; // This replaces maxTries
 
 static void bsp_icm_delay(uint32_t x)
 {
-    if (x < 10)
+    size_t delay_ticks = pdMS_TO_TICKS(x);
+    if (delay_ticks < 1)
     {
         // less then 1 tick
-        vTaskDelay(1);
+        delay_ticks = 1;
     }
-    x += 5;
-    x /= 10;
-    vTaskDelay(x);
-}
+    vTaskDelay(delay_ticks);
+} // bsp_icm_delay
 
 #define bsp_icm_debug_printf(fmt, ...) ESP_LOGI("icm drv", fmt, ##__VA_ARGS__) // printf(fmt, ##__VA_ARGS__)
 
